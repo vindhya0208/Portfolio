@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vindhya Cheepulla | Software Trainee</title>
+
+  <!-- Fonts & Icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bormioli:wght@700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --mist-teal: #64a6bd;
+      --mist-light: #90e0ef;
+      --dew-bg: #f0f7f9;
+      --glass-mist: rgba(255, 255, 255, 0.4);
+      --text-deep: #1b262c;
+      --text-misty: #546e7a;
+      --border-mist: rgba(100, 166, 189, 0.15);
+      --accent-glow: rgba(144, 224, 239, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--dew-bg);
+      background-image:
+        radial-gradient(at 0% 0%, #caf0f8 0px, transparent 50%),
+        radial-gradient(at 100% 0%, #e0f2f1 0px, transparent 50%),
+        radial-gradient(at 50% 100%, #ffffff 0px, transparent 50%);
+      color: var(--text-deep);
+      line-height: 1.7;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* MIST OVERLAY EFFECT */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 2000;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(240, 247, 249, 0.7);
+      border-bottom: 1px solid var(--border-mist);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--mist-teal);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-deep);
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0.7;
+    }
+
+    .nav-links a:hover {
+      color: var(--mist-teal);
+      opacity: 1;
+    }
+
+    /* HEADER */
+    header {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 10%;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      color: var(--text-deep);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .header-sub {
+      font-size: 1rem;
+      color: var(--mist-teal);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--text-misty);
+      max-width: 700px;
+      font-weight: 300;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 120px 10%;
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.8rem;
+      margin-bottom: 4rem;
+      color: var(--text-deep);
+      text-align: center;
+      font-weight: 400;
+    }
+
+    /* CARDS - MOISTURE MIST GLASS */
+    .card {
+      background: var(--glass-mist);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 50px;
+      border-radius: 30px;
+      margin-bottom: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px rgba(100, 166, 189, 0.08);
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: 0.6s;
+    }
+
+    .card:hover::before {
+      transform: translateX(100%);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 20px 50px rgba(100, 166, 189, 0.15);
+      border-color: var(--mist-light);
+    }
+
+    .card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+      color: var(--mist-teal);
+    }
+
+    .card p {
+      color: var(--text-misty);
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-deep);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--mist-teal);
+      margin-bottom: 2rem;
+      transition: all 0.3s;
+    }
+
+    .github-link:hover {
+      color: var(--mist-teal);
+      gap: 15px;
+    }
+
+    /* CHIPS */
+    .tech-stack-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-misty);
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+    }
+
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .skill-chip {
+      padding: 8px 18px;
+      background: rgba(144, 224, 239, 0.15);
+      border: 1px solid rgba(144, 224, 239, 0.3);
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: var(--mist-teal);
+      font-weight: 500;
+      transition: all 0.4s;
+    }
+
+    .skill-chip:hover {
+      background: var(--mist-teal);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    /* CENTERED SKILLS CONTAINER FOR MAIN SECTION */
+    .skills-container.centered {
+      justify-content: center;
+    }
+
+    /* CONTACT */
+    .contact-card {
+      text-align: center;
+      padding: 60px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(144, 224, 239, 0.1));
+      border-radius: 40px;
+    }
+
+    .contact-item {
+      margin-bottom: 2rem;
+      font-size: 1.3rem;
+      font-weight: 300;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .contact-links a {
+      color: var(--mist-teal);
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-links a:hover {
+      transform: translateY(-3px);
+      color: var(--text-deep);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      font-size: 0.85rem;
+      color: var(--text-misty);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* MOBILE NAVIGATION */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hamburger div {
+      width: 28px;
+      height: 2px;
+      background: var(--mist-teal);
+      transition: 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        background: var(--dew-bg);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1999;
+      }
+
+      .nav-links.show {
+        right: 0;
+      }
+
+      .hamburger {
+        display: flex;
+        z-index: 2001;
+      }
+
+      header h1 {
+        font-size: 3.5rem;
+      }
+
+      section {
+        padding: 80px 6%;
+      }
+
+      .card {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">Vindhya</div>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="hamburger" id="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div data-aos="fade-up">
+      <div class="header-sub">Software Trainee</div>
+      <h1>Vindhya Cheepulla</h1>
+      <p>• Cloud & Web Enthusiast • Digital Marketing Learner</p>
+    </div>
+  </header>
+
+  <section id="about" data-aos="fade-up">
+    <h2>The Journey</h2>
+    <div class="card">
+      <p style="font-size: 1.2rem; line-height: 2;">
+        Currently serving as a software trainee and student at <strong>Andhra Polytechnic Kakinada</strong>, I am
+        refining my craft through an
+        internship at <strong>Agasthya Solutions</strong>. My focus lies at the intersection of Cloud Infrastructure,
+        Web Architecture, and the strategic landscape of Digital Marketing.
+      </p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Crafted Works</h2>
+
+    <div class="card" data-aos="fade-up">
+      <h3>Sign Language Translator App</h3>
+      <p>An Android-first accessibility tool utilizing real-time computer vision to translate signs into spoken word and
+        text.</p>
+      <a href="https://github.com/vindhya0208/VOX-IGNOTA" class="github-link" target="_blank">
+        <i class="fab fa-github"></i> View Project on GitHub
+      </a>
+      <div class="tech-stack">
+        <h5 class="tech-stack-title">Infrastructure</h5>
+        <div class="skills-container">
+          <div class="skill-chip">Java</div>
+          <div class="skill-chip">TensorFlow Lite</div>
+          <div class="skill-chip">Camera API</div>
+          <div class="skill-chip">XML</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-aos="fade-up">
+      <h3>ResumeMatch ATS</h3>
+      <p>A sophisticated analysis engine that benchmarks resumes against industrial job descriptions using NLP and match
+        scoring algorithms.</p>
+      <a href="https://github.com/vindhya0208/ResumeMatch-ats-checker" class="github-link" target="_blank">
+        <i class="fab fa-github"></i> View Project on GitHub
+      </a>
+      <div class="tech-stack">
+        <h5 class="tech-stack-title">Intelligence</h5>
+        <div class="skills-container">
+          <div class="skill-chip">React</div>
+          <div class="skill-chip">FastAPI</div>
+          <div class="skill-chip">spaCy</div>
+          <div class="skill-chip">AWS S3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-aos="fade-up">
+      <h3>Premium-Todo-App</h3>
+      <p>Workflow management reimagined with fluid interactions, priority logic, and persistence-driven data handling.
+      </p>
+      <a href="https://github.com/vindhya0208/Premium-Todo-App" class="github-link" target="_blank">
+        <i class="fab fa-github"></i> View Project on GitHub
+      </a>
+      <div class="tech-stack">
+        <h5 class="tech-stack-title">Stack</h5>
+        <div class="skills-container">
+          <div class="skill-chip">React v18</div>
+          <div class="skill-chip">Lucide Icons</div>
+          <div class="skill-chip">Tailwind</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-aos="fade-up">
+      <h3>iLUNARA Skincare</h3>
+      <p>A high-performance aesthetic web experience integrated with SEO optimization and branding strategies.</p>
+      <a href="https://github.com/vindhya0208/iLUNARA.SKINCARE" class="github-link" target="_blank">
+        <i class="fab fa-github"></i> View Project on GitHub
+      </a>
+      <div class="tech-stack">
+        <h5 class="tech-stack-title">Development</h5>
+        <div class="skills-container">
+          <div class="skill-chip">HTML5</div>
+          <div class="skill-chip">CSS3</div>
+          <div class="skill-chip">SEO Engine</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-aos="fade-up" style="margin-bottom: 0;">
+      <h3>Interview Rehearsal</h3>
+      <p>A preparation environment providing structured paths, mock environments, and algorithmic practice questions.
+      </p>
+      <a href="https://github.com/vindhya0208/Premium-Todo App" class="github-link" target="_blank">
+        <i class="fab fa-github"></i> View Project on GitHub
+      </a>
+      <div class="tech-stack">
+        <h5 class="tech-stack-title">Core</h5>
+        <div class="skills-container">
+          <div class="skill-chip">Angular</div>
+          <div class="skill-chip">Node.js</div>
+          <div class="skill-chip">MongoDB</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" data-aos="fade-up">
+    <h2>Skills & Expertise</h2>
+    <div class="card">
+      <div class="tech-stack" style="margin-bottom: 2.5rem;">
+        <h5 class="tech-stack-title">Languages</h5>
+        <div class="skills-container">
+          <div class="skill-chip">Python</div>
+          <div class="skill-chip">Java</div>
+          <div class="skill-chip">C</div>
+          <div class="skill-chip">Android</div>
+        </div>
+      </div>
+
+      <div class="tech-stack" style="margin-bottom: 2.5rem;">
+        <h5 class="tech-stack-title">Web Development</h5>
+        <div class="skills-container">
+          <div class="skill-chip">HTML5</div>
+          <div class="skill-chip">CSS3</div>
+          <div class="skill-chip">JavaScript</div>
+          <div class="skill-chip">Node.js</div>
+          <div class="skill-chip">Web Development</div>
+          <div class="skill-chip">Full Stack</div>
+        </div>
+      </div>
+
+      <div class="tech-stack" style="margin-bottom: 2.5rem;">
+        <h5 class="tech-stack-title">Cloud & Infrastructure</h5>
+        <div class="skills-container">
+          <div class="skill-chip">AWS</div>
+          <div class="skill-chip">Azure</div>
+          <div class="skill-chip">Cloud Computing</div>
+          <div class="skill-chip">Linux</div>
+          <div class="skill-chip">Git/GitHub</div>
+        </div>
+      </div>
+
+      <div class="tech-stack" style="margin-bottom: 2.5rem;">
+        <h5 class="tech-stack-title">Databases</h5>
+        <div class="skills-container">
+          <div class="skill-chip">SQL</div>
+          <div class="skill-chip">MongoDB</div>
+        </div>
+      </div>
+
+      <div class="tech-stack">
+        <h5 class="tech-stack-title">Expertise & Soft Skills</h5>
+        <div class="skills-container">
+          <div class="skill-chip">Digital Marketing</div>
+          <div class="skill-chip">Problem Solving</div>
+          <div class="skill-chip">Communication</div>
+          <div class="skill-chip">Interpersonal Skills</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" data-aos="fade-up">
+    <div class="contact-card">
+      <h2>Let's Connect</h2>
+      <div class="contact-item">Email:cheepullavindhya@2k7gmail.com</div>
+      <div class="contact-links">
+        <a href="https://github.com/vindhya0208" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.linkedin.com/in/vindhya-cheepulla/" target="_blank"><i class="fab fa-linkedin"></i>
+          LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Vindhya Cheepulla • In Search of Pure Logic</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1200, once: true, offset: 150 });
+
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("navLinks");
+
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+      const divs = hamburger.querySelectorAll('div');
+      if (navLinks.classList.contains('show')) {
+        divs[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
+        divs[1].style.opacity = '0';
+        divs[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
+      } else {
+        divs[0].style.transform = 'none';
+        divs[1].style.opacity = '1';
+        divs[2].style.transform = 'none';
+      }
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('show');
+        const divs = hamburger.querySelectorAll('div');
+        divs[0].style.transform = 'none';
+        divs[1].style.opacity = '1';
+        divs[2].style.transform = 'none';
+      });
+    });
+  </script>
+</body>
+
+</html>
