@@ -15,6 +15,17 @@
   <!-- AOS Animation -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+  <!-- GSAP & Animation Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.170.0/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-confetti@2.12.0/tsparticles.confetti.bundle.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@tsparticles/preset-bubbles@3.0.3/tsparticles.preset.bubbles.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.3/tsparticles.bundle.min.js"></script>
+
   <style>
     :root {
       --mist-teal: #64a6bd;
@@ -25,6 +36,7 @@
       --text-misty: #546e7a;
       --border-mist: rgba(100, 166, 189, 0.15);
       --accent-glow: rgba(144, 224, 239, 0.3);
+      --luxury-ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -44,6 +56,189 @@
       line-height: 1.7;
       scroll-behavior: smooth;
       overflow-x: hidden;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        cursor: auto;
+      }
+    }
+
+    /* PRELOADER CURTAIN */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .curtain {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: var(--text-deep);
+      z-index: 1;
+    }
+
+    .curtain-left {
+      left: 0;
+    }
+
+    .curtain-right {
+      right: 0;
+    }
+
+    .loader-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .pulse-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3rem;
+      color: white;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      opacity: 0;
+    }
+
+    /* BACKGROUND LAYERS */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    #tsparticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .gradient-drift {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f0f7f9, #e0f2f1, #caf0f8, #f0f7f9);
+      background-size: 300% 300%;
+      z-index: -5;
+      animation: drift 15s ease-in-out infinite alternate;
+      opacity: 0.8;
+    }
+
+    /* ANIMATED AURAS */
+    .aura {
+      position: fixed;
+      width: 70vw;
+      height: 70vw;
+      border-radius: 50%;
+      filter: blur(150px);
+      z-index: -4;
+      opacity: 0.2;
+      pointer-events: none;
+      animation: auraMove 25s infinite alternate var(--luxury-ease);
+    }
+
+    .aura-1 {
+      background: radial-gradient(circle, var(--mist-teal), transparent 70%);
+      top: -20%;
+      left: -20%;
+    }
+
+    .aura-2 {
+      background: radial-gradient(circle, var(--mist-light), transparent 70%);
+      bottom: -20%;
+      right: -20%;
+      animation-delay: -12s;
+    }
+
+    @keyframes auraMove {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(10%, 15%) scale(1.1);
+      }
+
+      100% {
+        transform: translate(-5%, 10%) scale(0.9);
+      }
+    }
+
+    @keyframes drift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* SCROLL PROGRESS BAR */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 5px;
+      background: linear-gradient(to right, var(--mist-teal), var(--mist-light));
+      z-index: 3000;
+    }
+
+    /* PREMIUM HOVER EFFECTS */
+    .shine-sweep {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: skewX(-25deg);
+      transition: 0.75s var(--luxury-ease);
+      pointer-events: none;
+    }
+
+    .card:hover .shine-sweep {
+      left: 150%;
+    }
+
+    /* WILL CHANGE FOR PERFORMANCE */
+    .card,
+    .navbar,
+    .header-sub,
+    h1,
+    h2,
+    .curtain {
+      will-change: transform, opacity;
+    }
+
+    /* SPLIT TEXT STYLES */
+    .char {
+      display: inline-block;
     }
 
     /* MIST OVERLAY EFFECT */
@@ -391,6 +586,22 @@
 </head>
 
 <body>
+  <div class="scroll-progress"></div>
+
+  <div class="preloader">
+    <div class="curtain curtain-left"></div>
+    <div class="curtain curtain-right"></div>
+    <div class="loader-content">
+      <div class="pulse-text" id="pulseText">Vindhya</div>
+    </div>
+  </div>
+
+  <div class="gradient-drift"></div>
+  <div class="aura aura-1"></div>
+  <div class="aura aura-2"></div>
+  <canvas id="bg-canvas"></canvas>
+  <div id="tsparticles"></div>
+
   <nav class="navbar">
     <div class="nav-container">
       <div class="logo">Vindhya</div>
@@ -421,6 +632,7 @@
   <section id="about" data-aos="fade-up">
     <h2>The Journey</h2>
     <div class="card">
+      <div class="shine-sweep"></div>
       <p style="font-size: 1.2rem; line-height: 2;">
         Currently serving as a software trainee and student at <strong>Andhra Polytechnic Kakinada</strong>, I am
         refining my craft through an
@@ -434,6 +646,7 @@
     <h2>Crafted Works</h2>
 
     <div class="card" data-aos="fade-up">
+      <div class="shine-sweep"></div>
       <h3>Sign Language Translator App</h3>
       <p>An Android-first accessibility tool utilizing real-time computer vision to translate signs into spoken word and
         text.</p>
@@ -454,6 +667,7 @@
     </div>
 
     <div class="card" data-aos="fade-up">
+      <div class="shine-sweep"></div>
       <h3>ResumeMatch ATS</h3>
       <p>A sophisticated analysis engine that benchmarks resumes against industrial job descriptions using NLP and match
         scoring algorithms.</p>
@@ -477,6 +691,7 @@
     </div>
 
     <div class="card" data-aos="fade-up">
+      <div class="shine-sweep"></div>
       <h3>iLUNARA Skincare</h3>
       <p>A high-performance aesthetic web experience integrated with SEO optimization and branding strategies.</p>
       <a href="https://github.com/vindhya0208/iLUNARA.SKINCARE" class="github-link" target="_blank">
@@ -499,6 +714,7 @@
     </div>
 
     <div class="card" data-aos="fade-up">
+      <div class="shine-sweep"></div>
       <h3>Premium-Todo-App</h3>
       <p>Workflow management reimagined with fluid interactions, priority logic, and persistence-driven data handling.
       </p>
@@ -520,6 +736,7 @@
 
 
     <div class="card" data-aos="fade-up">
+      <div class="shine-sweep"></div>
       <h3>Interview Rehearsal</h3>
       <p>A preparation environment providing structured paths, mock environments, and algorithmic practice questions.
       </p>
@@ -540,7 +757,30 @@
       </div>
     </div>
 
+    <div class="card" data-aos="fade-up">
+      <div class="shine-sweep"></div>
+      <h3>Digital Marketing Portfolio</h3>
+      <p>A comprehensive showcase of digital marketing strategies, campaign analysis, and brand growth initiatives.</p>
+      <a href="https://github.com/vindhya0208/Digital-Marketing-Portfolio" class="github-link" target="_blank">
+        <i class="fab fa-github"></i> View Project on GitHub
+      </a>
+      <a href="https://vindhya0208.github.io/Digital-Marketing-Portfolio/" class="live-link" target="_blank">
+        <i class="fas fa-external-link-alt"></i> Explore Live Experience
+      </a>
+      <div class="tech-stack">
+        <h5 class="tech-stack-title">Expertise</h5>
+        <div class="skills-container">
+          <div class="skill-chip">SEO</div>
+          <div class="skill-chip">Content Strategy</div>
+          <div class="skill-chip">Analytics</div>
+          <div class="skill-chip">Branding</div>
+          <div class="skill-chip">Marketing Automations</div>
+        </div>
+      </div>
+    </div>
+
     <div class="card" data-aos="fade-up" style="margin-bottom: 0;">
+      <div class="shine-sweep"></div>
       <h3>Password Sentinel</h3>
       <p>A refined security analysis and password generation tool featuring local encryption and private-by-design
         architecture.</p>
@@ -564,6 +804,7 @@
   <section id="skills" data-aos="fade-up">
     <h2>Skills & Expertise</h2>
     <div class="card">
+      <div class="shine-sweep"></div>
       <div class="tech-stack" style="margin-bottom: 2.5rem;">
         <h5 class="tech-stack-title">Languages</h5>
         <div class="skills-container">
@@ -620,6 +861,7 @@
   <section id="contact" data-aos="fade-up">
     <h2>Let's Connect</h2>
     <div class="card contact-card">
+      <div class="shine-sweep"></div>
       <div class="contact-item">cheepullavindhya@2k7gmail.com</div>
       <div class="contact-links">
         <a href="https://github.com/vindhya0208" target="_blank"><i class="fab fa-github"></i> GitHub</a>
@@ -637,6 +879,170 @@
   <script>
     AOS.init({ duration: 1200, once: true, offset: 150 });
 
+    // GSAP REGISTRATIONS
+    gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+    // 1. PRELOADER & ENTRANCE TIMELINE
+    const tl = gsap.timeline({ defaults: { ease: "power4.inOut" } });
+
+    // Split text for Hero Title manually since SplitText is a Club GreenSock plugin
+    const heroTitle = document.querySelector('header h1');
+    const titleText = heroTitle.innerText;
+    heroTitle.innerHTML = titleText.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+
+    tl.to("#pulseText", { opacity: 1, duration: 1 })
+      .to("#pulseText", { opacity: 0.3, repeat: 2, yoyo: true, duration: 0.8 })
+      .to(".curtain-left", { xPercent: -100, duration: 1.5, ease: "expo.inOut" }, "+=0.2")
+      .to(".curtain-right", { xPercent: 100, duration: 1.5, ease: "expo.inOut" }, "<")
+      .to(".preloader", { display: "none" })
+      .from(".navbar", { yPercent: -100, duration: 1, ease: "expo.out" }, "-=0.5")
+      .from(".header-sub", { y: 30, opacity: 0, duration: 1 }, "-=0.7")
+      .from(".char", {
+        y: 100,
+        opacity: 0,
+        stagger: 0.05,
+        duration: 1,
+        ease: "back.out(1.7)"
+      }, "-=0.8")
+      .from("header p", { y: 20, opacity: 0, duration: 1 }, "-=0.5");
+
+    // 2. THREE.JS SILK WAVE
+    const canvas = document.querySelector('#bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    const geometry = new THREE.PlaneGeometry(20, 10, 50, 50);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0x64a6bd,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.05
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.rotation.x = -Math.PI / 3;
+    scene.add(mesh);
+
+    function animateThree() {
+      requestAnimationFrame(animateThree);
+      const time = Date.now() * 0.001;
+      const positions = geometry.attributes.position.array;
+      for (let i = 0; i < positions.length; i += 3) {
+        const x = positions[i];
+        const y = positions[i + 1];
+        positions[i + 2] = Math.sin(x * 0.5 + time) * Math.cos(y * 0.5 + time) * 0.5;
+      }
+      geometry.attributes.position.needsUpdate = true;
+      renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    window.addEventListener('resize', onWindowResize);
+    onWindowResize();
+    animateThree();
+
+    // 3. TSPARTICLES
+    tsParticles.load("tsparticles", {
+      particles: {
+        number: { value: 20, density: { enable: true, value_area: 1000 } },
+        color: { value: "#90e0ef" },
+        shape: { type: "circle" },
+        opacity: { value: 0.1, random: true },
+        size: { value: { min: 1, max: 3 }, random: true },
+        move: {
+          enable: true,
+          speed: 0.5,
+          direction: "top",
+          random: true,
+          straight: false,
+          out_mode: "out"
+        }
+      }
+    });
+
+    // 4. SCROLL INTERACTIONS
+    gsap.to(".scroll-progress", {
+      width: "100%",
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.3
+      }
+    });
+
+    // Parallax background
+    gsap.to("#bg-canvas", {
+      y: -200,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true
+      }
+    });
+
+    // Scroll-triggered reveal
+    document.querySelectorAll('section').forEach(section => {
+      gsap.from(section.querySelectorAll('.card, h2'), {
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      });
+    });
+
+    // 5. MICRO-INTERACTIONS
+    VanillaTilt.init(document.querySelectorAll(".card"), {
+      max: 10,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.2,
+    });
+
+    // Floating Hero effect
+    gsap.to("header > div", {
+      y: 15,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    // Button interactions
+    document.querySelectorAll('.github-link, .live-link').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        gsap.to(btn, { y: -3, duration: 0.3, ease: "power2.out" });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { y: 0, duration: 0.3, ease: "power2.out" });
+      });
+    });
+
+    // Button interactions
+    document.querySelectorAll('.github-link, .live-link').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        gsap.to(btn, { y: -3, duration: 0.3, ease: "power2.out" });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { y: 0, duration: 0.3, ease: "power2.out" });
+      });
+    });
+
+    // MOBILE NAVIGATION (Existing code kept and enhanced if needed)
     const hamburger = document.getElementById("hamburger");
     const navLinks = document.getElementById("navLinks");
 
@@ -644,13 +1050,13 @@
       navLinks.classList.toggle("show");
       const divs = hamburger.querySelectorAll('div');
       if (navLinks.classList.contains('show')) {
-        divs[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
-        divs[1].style.opacity = '0';
-        divs[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
+        gsap.to(divs[0], { rotate: 45, y: 8, duration: 0.3 });
+        gsap.to(divs[1], { opacity: 0, duration: 0.3 });
+        gsap.to(divs[2], { rotate: -45, y: -8, duration: 0.3 });
       } else {
-        divs[0].style.transform = 'none';
-        divs[1].style.opacity = '1';
-        divs[2].style.transform = 'none';
+        gsap.to(divs[0], { rotate: 0, y: 0, duration: 0.3 });
+        gsap.to(divs[1], { opacity: 1, duration: 0.3 });
+        gsap.to(divs[2], { rotate: 0, y: 0, duration: 0.3 });
       }
     });
 
@@ -658,9 +1064,9 @@
       link.addEventListener('click', () => {
         navLinks.classList.remove('show');
         const divs = hamburger.querySelectorAll('div');
-        divs[0].style.transform = 'none';
-        divs[1].style.opacity = '1';
-        divs[2].style.transform = 'none';
+        gsap.to(divs[0], { rotate: 0, y: 0, duration: 0.3 });
+        gsap.to(divs[1], { opacity: 1, duration: 0.3 });
+        gsap.to(divs[2], { rotate: 0, y: 0, duration: 0.3 });
       });
     });
   </script>
