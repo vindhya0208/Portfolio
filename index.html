@@ -2,1073 +2,550 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vindhya Cheepulla | Software Trainee</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vindhya Cheepulla | A Cinematic Journey</title>
 
-  <!-- Fonts & Icons -->
+  <!-- UI/Layout: Tailwind & Google Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bormioli:wght@700&family=DM+Serif+Display&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- AOS Animation -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-  <!-- GSAP & Animation Libraries -->
+  <!-- Animation & 3D Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.170.0/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles-confetti@2.12.0/tsparticles.confetti.bundle.min.js"></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/@tsparticles/preset-bubbles@3.0.3/tsparticles.preset.bubbles.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.3/tsparticles.bundle.min.js"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
 
   <style>
     :root {
-      --mist-teal: #64a6bd;
-      --mist-light: #90e0ef;
-      --dew-bg: #f0f7f9;
-      --glass-mist: rgba(255, 255, 255, 0.4);
-      --text-deep: #1b262c;
-      --text-misty: #546e7a;
-      --border-mist: rgba(100, 166, 189, 0.15);
-      --accent-glow: rgba(144, 224, 239, 0.3);
-      --luxury-ease: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --gold: #d4af37;
+      --deep-red: #4a0808;
+      --void: #0a0000;
     }
 
     body {
+      margin: 0;
+      background-color: var(--void);
+      color: #fdfbf7;
       font-family: 'Inter', sans-serif;
-      background-color: var(--dew-bg);
-      background-image:
-        radial-gradient(at 0% 0%, #caf0f8 0px, transparent 50%),
-        radial-gradient(at 100% 0%, #e0f2f1 0px, transparent 50%),
-        radial-gradient(at 50% 100%, #ffffff 0px, transparent 50%);
-      color: var(--text-deep);
-      line-height: 1.7;
-      scroll-behavior: smooth;
       overflow-x: hidden;
     }
 
-    @media (max-width: 768px) {
-      body {
-        cursor: auto;
-      }
-    }
-
-    /* PRELOADER CURTAIN */
-    .preloader {
+    canvas#bg-canvas {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .curtain {
-      position: absolute;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      background: var(--text-deep);
-      z-index: 1;
-    }
-
-    .curtain-left {
-      left: 0;
-    }
-
-    .curtain-right {
-      right: 0;
-    }
-
-    .loader-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-    }
-
-    .pulse-text {
-      font-family: 'DM Serif Display', serif;
-      font-size: 3rem;
-      color: white;
-      letter-spacing: 10px;
-      text-transform: uppercase;
-      opacity: 0;
-    }
-
-    /* BACKGROUND LAYERS */
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      pointer-events: none;
-    }
-
-    #tsparticles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      pointer-events: none;
     }
 
-    .gradient-drift {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #f0f7f9, #e0f2f1, #caf0f8, #f0f7f9);
-      background-size: 300% 300%;
-      z-index: -5;
-      animation: drift 15s ease-in-out infinite alternate;
-      opacity: 0.8;
-    }
-
-    /* ANIMATED AURAS */
-    .aura {
-      position: fixed;
-      width: 70vw;
-      height: 70vw;
-      border-radius: 50%;
-      filter: blur(150px);
-      z-index: -4;
-      opacity: 0.2;
-      pointer-events: none;
-      animation: auraMove 25s infinite alternate var(--luxury-ease);
-    }
-
-    .aura-1 {
-      background: radial-gradient(circle, var(--mist-teal), transparent 70%);
-      top: -20%;
-      left: -20%;
-    }
-
-    .aura-2 {
-      background: radial-gradient(circle, var(--mist-light), transparent 70%);
-      bottom: -20%;
-      right: -20%;
-      animation-delay: -12s;
-    }
-
-    @keyframes auraMove {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      50% {
-        transform: translate(10%, 15%) scale(1.1);
-      }
-
-      100% {
-        transform: translate(-5%, 10%) scale(0.9);
-      }
-    }
-
-    @keyframes drift {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    /* SCROLL PROGRESS BAR */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 5px;
-      background: linear-gradient(to right, var(--mist-teal), var(--mist-light));
-      z-index: 3000;
-    }
-
-    /* PREMIUM HOVER EFFECTS */
-    .shine-sweep {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transform: skewX(-25deg);
-      transition: 0.75s var(--luxury-ease);
-      pointer-events: none;
-    }
-
-    .card:hover .shine-sweep {
-      left: 150%;
-    }
-
-    /* WILL CHANGE FOR PERFORMANCE */
-    .card,
-    .navbar,
-    .header-sub,
-    h1,
-    h2,
-    .curtain {
-      will-change: transform, opacity;
-    }
-
-    /* SPLIT TEXT STYLES */
-    .char {
-      display: inline-block;
-    }
-
-    /* MIST OVERLAY EFFECT */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
-      opacity: 0.03;
-      pointer-events: none;
-      z-index: 1000;
-    }
-
-    /* NAVBAR */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 2000;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(240, 247, 249, 0.7);
-      border-bottom: 1px solid var(--border-mist);
-    }
-
-    .nav-container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.8rem;
-      color: var(--mist-teal);
-      letter-spacing: -0.5px;
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 2.5rem;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-deep);
-      font-weight: 500;
-      font-size: 0.85rem;
-      transition: all 0.3s;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      opacity: 0.7;
-    }
-
-    .nav-links a:hover {
-      color: var(--mist-teal);
-      opacity: 1;
-    }
-
-    /* HEADER */
-    header {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 10%;
-      position: relative;
-    }
-
-    header h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(3rem, 10vw, 5.5rem);
-      color: var(--text-deep);
-      margin-bottom: 0.5rem;
-      font-weight: 400;
-      line-height: 1;
-    }
-
-    .header-sub {
-      font-size: 1rem;
-      color: var(--mist-teal);
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-    }
-
-    header p {
-      font-size: 1.1rem;
-      color: var(--text-misty);
-      max-width: 700px;
-      font-weight: 300;
-    }
-
-    /* SECTIONS */
-    section {
-      padding: 120px 10%;
-      max-width: 1300px;
-      margin: auto;
-    }
-
-    h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.8rem;
-      margin-bottom: 4rem;
-      color: var(--text-deep);
-      text-align: center;
-      font-weight: 400;
-    }
-
-    /* CARDS - MOISTURE MIST GLASS */
-    .card {
-      background: var(--glass-mist);
+    .glass-card {
+      background: rgba(30, 4, 4, 0.2);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 50px;
-      border-radius: 30px;
-      margin-bottom: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 15px 35px rgba(100, 166, 189, 0.08);
-      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      position: relative;
-      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 4px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transform: translateX(-100%);
-      transition: 0.6s;
+    .glass-card:hover {
+      border-color: rgba(212, 175, 55, 0.6);
+      background: rgba(30, 4, 4, 0.4);
+      transform: translateY(-5px);
     }
 
-    .card:hover::before {
-      transform: translateX(100%);
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      background: rgba(255, 255, 255, 0.6);
-      box-shadow: 0 20px 50px rgba(100, 166, 189, 0.15);
-      border-color: var(--mist-light);
-    }
-
-    .card h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.8rem;
-      margin-bottom: 1.2rem;
-      color: var(--mist-teal);
-    }
-
-    .card p {
-      color: var(--text-misty);
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-    }
-
-    .github-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-deep);
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--mist-teal);
-      margin-bottom: 2rem;
-      transition: all 0.3s;
-    }
-
-    .github-link:hover {
-      color: var(--mist-teal);
-      gap: 15px;
-    }
-
-    .live-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-deep);
-      font-weight: 500;
-      font-size: 0.85rem;
-      margin-top: -1rem;
-      margin-bottom: 2rem;
-      transition: all 0.3s;
-      opacity: 0.7;
-    }
-
-    .live-link:hover {
-      color: var(--mist-teal);
-      opacity: 1;
-      gap: 15px;
-    }
-
-    /* CHIPS */
-    .tech-stack-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-misty);
-      margin-bottom: 1.2rem;
-      font-weight: 700;
-    }
-
-    .skills-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+    .text-reveal {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     }
 
     .skill-chip {
-      padding: 8px 18px;
-      background: rgba(144, 224, 239, 0.15);
-      border: 1px solid rgba(144, 224, 239, 0.3);
-      border-radius: 30px;
-      font-size: 0.85rem;
-      color: var(--mist-teal);
-      font-weight: 500;
-      transition: all 0.4s;
+      @apply px-3 py-1 text-xs border border-white/10 bg-white/5 backdrop-blur-md rounded-full text-white/80;
     }
 
-    .skill-chip:hover {
-      background: var(--mist-teal);
-      color: white;
-      transform: scale(1.05);
+    h1,
+    h2,
+    .playfair {
+      font-family: 'Playfair Display', serif;
     }
 
-    /* CENTERED SKILLS CONTAINER FOR MAIN SECTION */
-    .skills-container.centered {
-      justify-content: center;
-    }
+    /* Smooth scroll indicator animation */
+    @keyframes bounce {
 
-    /* CONTACT */
-    .contact-card {
-      text-align: center;
-      padding: 60px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(144, 224, 239, 0.1));
-      border-radius: 40px;
-    }
-
-    .contact-item {
-      margin-bottom: 2rem;
-      font-size: 1.3rem;
-      font-weight: 300;
-    }
-
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
-
-    .contact-links a {
-      color: var(--mist-teal);
-      text-decoration: none;
-      font-size: 1.1rem;
-      transition: 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .contact-links a:hover {
-      transform: translateY(-3px);
-      color: var(--text-deep);
-    }
-
-    /* FOOTER */
-    footer {
-      text-align: center;
-      padding: 60px 20px;
-      font-size: 0.85rem;
-      color: var(--text-misty);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* MOBILE NAVIGATION */
-    .hamburger {
-      display: none;
-      cursor: pointer;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .hamburger div {
-      width: 28px;
-      height: 2px;
-      background: var(--mist-teal);
-      transition: 0.3s;
-    }
-
-    @media (max-width: 768px) {
-      .nav-links {
-        position: fixed;
-        right: -100%;
-        top: 0;
-        height: 100vh;
-        width: 100%;
-        background: var(--dew-bg);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 1999;
+      0%,
+      100% {
+        transform: translateY(0);
       }
 
-      .nav-links.show {
-        right: 0;
+      50% {
+        transform: translateY(10px);
       }
+    }
 
-      .hamburger {
-        display: flex;
-        z-index: 2001;
-      }
+    .animate-bounce-slow {
+      animation: bounce 2s infinite ease-in-out;
+    }
 
-      header h1 {
-        font-size: 3.5rem;
-      }
-
-      section {
-        padding: 80px 6%;
-      }
-
-      .card {
-        padding: 30px;
-      }
+    /* Ensure elements are invisible before GSAP kicks in to prevent flickering */
+    .reveal-project,
+    .reveal-element {
+      opacity: 0;
     }
   </style>
 </head>
 
 <body>
-  <div class="scroll-progress"></div>
 
-  <div class="preloader">
-    <div class="curtain curtain-left"></div>
-    <div class="curtain curtain-right"></div>
-    <div class="loader-content">
-      <div class="pulse-text" id="pulseText">Vindhya</div>
+  <!-- Three.js Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Preloader / Curtain -->
+  <div id="loader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-[#0a0000]">
+    <div class="text-center">
+      <h2 id="loader-text" class="text-4xl md:text-6xl text-[#d4af37] playfair tracking-[1rem] opacity-0">VINDHYA</h2>
+      <div class="w-48 h-[1px] bg-[#d4af37]/30 mt-4 mx-auto overflow-hidden">
+        <div id="loader-bar" class="w-full h-full bg-[#d4af37] -translate-x-full"></div>
+      </div>
     </div>
   </div>
 
-  <div class="gradient-drift"></div>
-  <div class="aura aura-1"></div>
-  <div class="aura aura-2"></div>
-  <canvas id="bg-canvas"></canvas>
-  <div id="tsparticles"></div>
-
-  <nav class="navbar">
-    <div class="nav-container">
-      <div class="logo">Vindhya</div>
-
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-
-      <div class="hamburger" id="hamburger">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center transition-all duration-500" id="navbar">
+    <div class="text-2xl playfair text-[#f9e596] font-bold">Vindhya.</div>
+    <div class="hidden md:flex gap-12 text-sm uppercase tracking-widest font-light">
+      <a href="#about" class="hover:text-[#d4af37] transition-colors">About</a>
+      <a href="#projects" class="hover:text-[#d4af37] transition-colors">Works</a>
+      <a href="#skills" class="hover:text-[#d4af37] transition-colors">Expertise</a>
+      <a href="#contact" class="hover:text-[#d4af37] transition-colors">Connect</a>
     </div>
+    <div class="md:hidden text-[#d4af37]"><i class="fas fa-bars"></i></div>
   </nav>
 
-  <header>
-    <div data-aos="fade-up">
-      <div class="header-sub">Software Trainee</div>
-      <h1>Vindhya Cheepulla</h1>
-      <p>• Cloud & Web Enthusiast • Digital Marketing Learner</p>
-    </div>
-  </header>
+  <!-- Main Storytelling Scroll Container -->
+  <main class="relative z-10">
 
-  <section id="about" data-aos="fade-up">
-    <h2>The Journey</h2>
-    <div class="card">
-      <div class="shine-sweep"></div>
-      <p style="font-size: 1.2rem; line-height: 2;">
-        Currently serving as a software trainee and student at <strong>Andhra Polytechnic Kakinada</strong>, I am
-        refining my craft through an
-        internship at <strong>Agasthya Solutions</strong>. My focus lies at the intersection of Cloud Infrastructure,
-        Web Architecture, and the strategic landscape of Digital Marketing.
+    <!-- Section 1: Hero -->
+    <section class="min-h-screen flex flex-col items-center justify-center text-center px-4">
+      <div class="text-reveal overflow-hidden">
+        <h1 id="hero-title" class="text-5xl md:text-8xl text-[#f9e596] mb-4 opacity-0 translate-y-full">Vindhya
+          Cheepulla</h1>
+      </div>
+      <p id="hero-tagline" class="text-lg md:text-xl text-white/60 tracking-[0.2em] max-w-2xl opacity-0 translate-y-10">
+        Software Trainee • Cloud & Web Enthusiast • Digital Marketing Learner
       </p>
-    </div>
-  </section>
+    </section>
 
-  <section id="projects">
-    <h2>Crafted Works</h2>
+    <!-- Section 2: About -->
+    <section id="about" class="min-h-screen py-32 px-6 max-w-6xl mx-auto flex items-center">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div class="space-y-8 reveal-element">
+          <h2 class="text-4xl md:text-6xl text-[#f9e596]">The Journey</h2>
+          <div class="w-20 h-1 bg-[#d4af37]"></div>
+          <p class="text-xl leading-relaxed text-white/80">
+            Currently serving as a software trainee and student at
+            <span class="text-[#f9e596] italic">Andhra Polytechnic Kakinada</span>,
+            I am refining my craft through an internship at
+            <span class="text-[#f9e596] italic">Agasthya Solutions</span>.
+          </p>
+          <p class="text-lg text-white/60">
+            My focus lies at the intersection of Cloud Infrastructure, Web Architecture, and Digital Marketing. I seek
+            the pure logic behind complex systems.
+          </p>
+        </div>
+    </section>
 
-    <div class="card" data-aos="fade-up">
-      <div class="shine-sweep"></div>
-      <h3>Sign Language Translator App</h3>
-      <p>An Android-first accessibility tool utilizing real-time computer vision to translate signs into spoken word and
-        text.</p>
-      <a href="https://github.com/vindhya0208/VOX-IGNOTA" class="github-link" target="_blank">
-        <i class="fab fa-github"></i> View Project on GitHub
-      </a>
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Infrastructure</h5>
-        <div class="skills-container">
-          <div class="skill-chip">Android</div>
-          <div class="skill-chip">Java</div>
-          <div class="skill-chip">TensorFlow Lite</div>
-          <div class="skill-chip">Camera API</div>
-          <div class="skill-chip">XML</div>
-          <div class="skill-chip">Python</div>
+    <!-- Section 3: Projects -->
+    <section id="projects" class="py-32 px-6 max-w-7xl mx-auto">
+      <div class="text-center mb-20 reveal-element">
+        <h2 class="text-4xl md:text-6xl text-[#f9e596] mb-4">Crafted Works</h2>
+        <p class="text-white/40 tracking-widest uppercase text-sm">Case Studies & Experimental Builds</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+        <div class="glass-card p-8 flex flex-col reveal-project">
+          <div class="flex justify-between items-start mb-6">
+            <i class="fas fa-hand-holding-medical text-3xl text-[#d4af37]"></i>
+            <a href="https://github.com/vindhya0208/VOX-IGNOTA" target="_blank"
+              class="text-white/40 hover:text-white transition-colors"><i class="fab fa-github text-xl"></i></a>
+          </div>
+
+          <h3 class="text-2xl playfair text-[#f9e596] mb-3">Sign Language Translator</h3>
+
+          <p class="text-sm text-white/60 flex-grow mb-6">
+            An Android accessibility tool utilizing real-time computer vision to bridge communication gaps.
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-chip">Android |</span>
+            <span class="skill-chip">Java |</span>
+            <span class="skill-chip">TensorFlow Lite |</span>
+            <span class="skill-chip">Camera API |</span>
+            <span class="skill-chip">XML |</span>
+            <span class="skill-chip">Python |</span>
+          </div>
+        </div>
+        <!-- Project 2 -->
+        <div class="glass-card p-8 flex flex-col reveal-project">
+          <div class="flex justify-between items-start mb-6">
+            <i class="fas fa-file-invoice text-3xl text-[#d4af37]"></i>
+            <div class="flex gap-4">
+              <a href="https://github.com/vindhya0208/ResumeMatch-ats-checker" target="_blank"
+                class="text-white/40 hover:text-white transition-colors">
+                <i class="fab fa-github text-xl"></i>
+              </a>
+              <a href="https://vindhya0208.github.io/ResumeMatch-ats-checker/" target="_blank"
+                class="text-white/40 hover:text-white transition-colors">
+                <i class="fas fa-external-link-alt text-lg"></i>
+              </a>
+            </div>
+          </div>
+
+          <h3 class="text-2xl playfair text-[#f9e596] mb-3">ResumeMatch ATS</h3>
+
+          <p class="text-sm text-white/60 flex-grow mb-6">
+            NLP-driven analysis engine benchmarking resumes against industrial descriptions using spaCy and FastAPI.
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-chip">React |</span>
+            <span class="skill-chip">Python |</span>
+            <span class="skill-chip">FastAPI |</span>
+            <span class="skill-chip">spaCy |</span>
+            <span class="skill-chip">NLP |</span>
+            <span class="skill-chip">AWS S3 |</span>
+          </div>
+        </div>
+        <!-- Project 3 -->
+        <div class="glass-card p-8 flex flex-col reveal-project">
+          <div class="flex justify-between items-start mb-6">
+            <i class="fas fa-spa text-3xl text-[#d4af37]"></i>
+
+            <div class="flex gap-4">
+              <a href="https://github.com/vindhya0208/iLUNARA.SKINCARE" target="_blank"
+                class="text-white/40 hover:text-white transition-colors">
+                <i class="fab fa-github text-xl"></i>
+              </a>
+              <a href="https://vindhya0208.github.io/iLUNARA.SKINCARE/" target="_blank"
+                class="text-white/40 hover:text-white transition-colors">
+                <i class="fas fa-external-link-alt text-lg"></i>
+              </a>
+            </div>
+          </div>
+          <h3 class="text-2xl playfair text-[#f9e596] mb-3">iLUNARA Skincare</h3>
+          <p class="text-sm text-white/60 flex-grow mb-6">Aesthetic web experience integrated with heavy SEO
+            optimization and branding strategies for skincare.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-chip">SEO |</span>
+            <span class="skill-chip">SEO Engine |</span>
+            <span class="skill-chip">Branding |</span>
+            <span class="skill-chip">Digital Marketing |</span>
+            <span class="skill-chip">HTML5 |</span>
+            <span class="skill-chip">CSS3 |</span>
+            <span class="skill-chip">JavaScript |</span>
+            <span class="skill-chip">JS |</span>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="glass-card p-8 flex flex-col reveal-project">
+          <div class="flex justify-between items-start mb-6">
+            <i class="fas fa-check-double text-3xl text-[#d4af37]"></i>
+            <a href="https://github.com/vindhya0208/Premium-Todo-App" target="_blank"
+              class="text-white/40 hover:text-white"><i class="fab fa-github text-xl"></i></a>
+          </div>
+          <h3 class="text-2xl playfair text-[#f9e596] mb-3">Premium Todo App</h3>
+          <p class="text-sm text-white/60 flex-grow mb-6">Workflow management reimagined with fluid interactions,
+            priority logic, and persistence-driven data handling.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-chip">React v18 |</span>
+            <span class="skill-chip">JavaScript |</span>
+            <span class="skill-chip">Tailwind |</span>
+            <span class="skill-chip">Lucide Icons |</span>
+            <span class="skill-chip">Local Storage |</span>
+          </div>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="glass-card p-8 flex flex-col reveal-project">
+          <div class="flex justify-between items-start mb-6">
+            <i class="fas fa-user-graduate text-3xl text-[#d4af37]"></i>
+            <a href="https://github.com/vindhya0208/Interview-Rehearsal" target="_blank"
+              class="text-white/40 hover:text-white"><i class="fab fa-github text-xl"></i></a>
+          </div>
+          <h3 class="text-2xl playfair text-[#f9e596] mb-3">Interview Rehearsal</h3>
+          <p class="text-sm text-white/60 flex-grow mb-6">MERN Stack environment providing structured paths, mock
+            environments, and algorithmic practice.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-chip">Angular |</span>
+            <span class="skill-chip">Bootstrap |</span>
+            <span class="skill-chip">HTML |</span>
+            <span class="skill-chip">Node.js |</span>
+            <span class="skill-chip">MongoDB |</span>
+            <span class="skill-chip">Express.js |</span>
+            <span class="skill-chip">Full Stack |</span>
+          </div>
+        </div>
+
+        <!-- Project 6 -->
+        <div class="glass-card p-8 flex flex-col reveal-project">
+          <div class="flex justify-between items-start mb-6">
+            <i class="fas fa-shield-alt text-3xl text-[#d4af37]"></i>
+            <a href="https://github.com/vindhya0208/Password-Sentinel" target="_blank"
+              class="text-white/40 hover:text-white"><i class="fab fa-github text-xl"></i></a>
+          </div>
+          <h3 class="text-2xl playfair text-[#f9e596] mb-3">Password Sentinel</h3>
+          <p class="text-sm text-white/60 flex-grow mb-6">Security analysis tool featuring local encryption and
+            private-by-design architecture for safety.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="skill-chip">HTML5 |</span>
+            <span class="skill-chip">CSS3 |</span>
+            <span class="skill-chip">JavaScript |</span>
+            <span class="skill-chip">Security Audit |</span>
+            <span class="skill-chip">Local Encryption |</span>
+            <span class="skill-chip">Privacy |</span>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="card" data-aos="fade-up">
-      <div class="shine-sweep"></div>
-      <h3>ResumeMatch ATS</h3>
-      <p>A sophisticated analysis engine that benchmarks resumes against industrial job descriptions using NLP and match
-        scoring algorithms.</p>
-      <a href="https://github.com/vindhya0208/ResumeMatch-ats-checker" class="github-link" target="_blank">
-        <i class="fab fa-github"></i> View Project on GitHub
-      </a>
-      <a href="https://vindhya0208.github.io/ResumeMatch-ats-checker/" class="live-link" target="_blank">
-        <i class="fas fa-external-link-alt"></i> Explore Live Experience
-      </a>
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Intelligence</h5>
-        <div class="skills-container">
-          <div class="skill-chip">React</div>
-          <div class="skill-chip">Python</div>
-          <div class="skill-chip">FastAPI</div>
-          <div class="skill-chip">spaCy</div>
-          <div class="skill-chip">NLP</div>
-          <div class="skill-chip">AWS S3</div>
+    <!-- Section 4: Skills -->
+    <section id="skills" class="py-32 px-6 max-w-7xl mx-auto">
+      <div class="text-center mb-20 reveal-element">
+        <h2 class="text-4xl md:text-6xl text-[#f9e596] mb-4">Skills & Expertise</h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div class="reveal-element">
+            <h4 class="text-[#d4af37] font-semibold mb-6 flex items-center gap-3"><i class="fas fa-code"></i> Languages
+            </h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">Python</span><span class="skill-chip">Java</span><span
+                class="skill-chip">C</span><span class="skill-chip">Android</span>
+            </div>
+          </div>
+          <div class="reveal-element">
+            <h4 class="text-[#d4af37] font-semibold mb-6 flex items-center gap-3"><i class="fas fa-globe"></i>
+              Development</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">HTML5</span><span class="skill-chip">CSS3</span><span
+                class="skill-chip">React</span><span class="skill-chip">Node.js</span><span class="skill-chip">Full
+                Stack</span>
+            </div>
+          </div>
+          <div class="reveal-element">
+            <h4 class="text-[#d4af37] font-semibold mb-6 flex items-center gap-3"><i class="fas fa-cloud"></i> Cloud
+            </h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">AWS</span><span class="skill-chip">Azure</span><span
+                class="skill-chip">Linux</span><span class="skill-chip">Git</span>
+            </div>
+          </div>
+          <div class="reveal-element">
+            <h4 class="text-[#d4af37] font-semibold mb-6 flex items-center gap-3"><i class="fas fa-bullhorn"></i>
+              Marketing</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-chip">SEO</span><span class="skill-chip">Branding</span><span
+                class="skill-chip">Automation</span><span class="skill-chip">Strategy</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="card" data-aos="fade-up">
-      <div class="shine-sweep"></div>
-      <h3>iLUNARA Skincare</h3>
-      <p>A high-performance aesthetic web experience integrated with SEO optimization and branding strategies.</p>
-      <a href="https://github.com/vindhya0208/iLUNARA.SKINCARE" class="github-link" target="_blank">
-        <i class="fab fa-github"></i> View Project on GitHub
-      </a>
-      <a href="https://vindhya0208.github.io/iLUNARA.SKINCARE/" class="live-link" target="_blank">
-        <i class="fas fa-external-link-alt"></i> Visit Live Showcase
-      </a>
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Development</h5>
-        <div class="skills-container">
-          <div class="skill-chip">HTML5</div>
-          <div class="skill-chip">CSS3</div>
-          <div class="skill-chip">JavaScript</div>
-          <div class="skill-chip">SEO Engine</div>
-          <div class="skill-chip">Branding</div>
-          <div class="skill-chip">Digital Marketing</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" data-aos="fade-up">
-      <div class="shine-sweep"></div>
-      <h3>Premium-Todo-App</h3>
-      <p>Workflow management reimagined with fluid interactions, priority logic, and persistence-driven data handling.
-      </p>
-      <a href="https://github.com/vindhya0208/Premium-Todo-App" class="github-link" target="_blank">
-        <i class="fab fa-github"></i> View Project on GitHub
-      </a>
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Stack</h5>
-        <div class="skills-container">
-          <div class="skill-chip">React v18</div>
-          <div class="skill-chip">JavaScript</div>
-          <div class="skill-chip">Tailwind</div>
-          <div class="skill-chip">Lucide Icons</div>
-          <div class="skill-chip">Local Storage</div>
-        </div>
-      </div>
-    </div>
-
-
-
-    <div class="card" data-aos="fade-up">
-      <div class="shine-sweep"></div>
-      <h3>Interview Rehearsal</h3>
-      <p>A preparation environment providing structured paths, mock environments, and algorithmic practice questions.
-      </p>
-      <a href="https://github.com/vindhya0208/Interview-Rehearsal" class="github-link" target="_blank">
-        <i class="fab fa-github"></i> View Project on GitHub
-      </a>
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Core</h5>
-        <div class="skills-container">
-          <div class="skill-chip">Angular</div>
-          <div class="skill-chip">Bootstrap</div>
-          <div class="skill-chip">HTML</div>
-          <div class="skill-chip">Node.js</div>
-          <div class="skill-chip">MongoDB</div>
-          <div class="skill-chip">Express.js</div>
-          <div class="skill-chip">Full Stack</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" data-aos="fade-up">
-      <div class="shine-sweep"></div>
-      <h3>Digital Marketing Portfolio</h3>
-      <p>A comprehensive showcase of digital marketing strategies, campaign analysis, and brand growth initiatives.</p>
-      <a href="https://github.com/vindhya0208/Digital-Marketing-Portfolio" class="github-link" target="_blank">
-        <i class="fab fa-github"></i> View Project on GitHub
-      </a>
-      <a href="https://vindhya0208.github.io/Digital-Marketing-Portfolio/" class="live-link" target="_blank">
-        <i class="fas fa-external-link-alt"></i> Explore Live Experience
-      </a>
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Expertise</h5>
-        <div class="skills-container">
-          <div class="skill-chip">SEO</div>
-          <div class="skill-chip">Content Strategy</div>
-          <div class="skill-chip">Analytics</div>
-          <div class="skill-chip">Branding</div>
-          <div class="skill-chip">Marketing Automations</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" data-aos="fade-up" style="margin-bottom: 0;">
-      <div class="shine-sweep"></div>
-      <h3>Password Sentinel</h3>
-      <p>A refined security analysis and password generation tool featuring local encryption and private-by-design
-        architecture.</p>
-      <a href="https://github.com/vindhya0208/Password-Sentinel" class="github-link" target="_blank">
-        <i class="fab fa-github"></i> View Project on GitHub
-      </a>
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Privacy First</h5>
-        <div class="skills-container">
-          <div class="skill-chip">HTML5</div>
-          <div class="skill-chip">CSS3</div>
-          <div class="skill-chip">JavaScript</div>
-          <div class="skill-chip">Security Audit</div>
-          <div class="skill-chip">Local Encryption</div>
-          <div class="skill-chip">Privacy</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="skills" data-aos="fade-up">
-    <h2>Skills & Expertise</h2>
-    <div class="card">
-      <div class="shine-sweep"></div>
-      <div class="tech-stack" style="margin-bottom: 2.5rem;">
-        <h5 class="tech-stack-title">Languages</h5>
-        <div class="skills-container">
-          <div class="skill-chip">Python</div>
-          <div class="skill-chip">Java</div>
-          <div class="skill-chip">C</div>
-          <div class="skill-chip">Android</div>
-        </div>
+    <!-- Section 5: Contact -->
+    <section id="contact" class="min-h-screen flex flex-col items-center justify-center text-center px-6">
+      <div class="reveal-element mb-12">
+        <h2 class="text-5xl md:text-7xl text-[#f9e596] mb-6">Let's Connect</h2>
+        <div class="w-32 h-[1px] bg-[#d4af37] mx-auto mb-8"></div>
+        <a href="mailto:cheepullavindhya2k7@gmail.com"
+          class="text-2xl md:text-4xl hover:text-[#d4af37] transition-all playfair">
+          cheepullavindhya2k7@gmail.com
+        </a>
       </div>
 
-      <div class="tech-stack" style="margin-bottom: 2.5rem;">
-        <h5 class="tech-stack-title">Web Development</h5>
-        <div class="skills-container">
-          <div class="skill-chip">HTML5</div>
-          <div class="skill-chip">CSS3</div>
-          <div class="skill-chip">JavaScript</div>
-          <div class="skill-chip">Node.js</div>
-          <div class="skill-chip">Web Development</div>
-          <div class="skill-chip">Full Stack</div>
-        </div>
+      <div class="flex gap-12 text-3xl mb-24 reveal-element">
+        <a href="https://github.com/vindhya0208" target="_blank"
+          class="text-white/60 hover:text-[#d4af37] transition-transform hover:-translate-y-2"><i
+            class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/vindhya-cheepulla/" target="_blank"
+          class="text-white/60 hover:text-[#d4af37] transition-transform hover:-translate-y-2"><i
+            class="fab fa-linkedin"></i></a>
       </div>
 
-      <div class="tech-stack" style="margin-bottom: 2.5rem;">
-        <h5 class="tech-stack-title">Cloud & Infrastructure</h5>
-        <div class="skills-container">
-          <div class="skill-chip">AWS</div>
-          <div class="skill-chip">Azure</div>
-          <div class="skill-chip">Cloud Computing</div>
-          <div class="skill-chip">Linux</div>
-          <div class="skill-chip">Git/GitHub</div>
-        </div>
-      </div>
+      <footer class="text-white/30 text-sm tracking-widest pb-12 uppercase">
+        © 2026 Vindhya Cheepulla • In Search of Pure Logic
+      </footer>
+    </section>
 
-      <div class="tech-stack" style="margin-bottom: 2.5rem;">
-        <h5 class="tech-stack-title">Databases</h5>
-        <div class="skills-container">
-          <div class="skill-chip">SQL</div>
-          <div class="skill-chip">MongoDB</div>
-        </div>
-      </div>
+  </main>
 
-      <div class="tech-stack">
-        <h5 class="tech-stack-title">Expertise & Soft Skills</h5>
-        <div class="skills-container">
-          <div class="skill-chip">Digital Marketing</div>
-          <div class="skill-chip">Problem Solving</div>
-          <div class="skill-chip">Communication</div>
-          <div class="skill-chip">Interpersonal Skills</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" data-aos="fade-up">
-    <h2>Let's Connect</h2>
-    <div class="card contact-card">
-      <div class="shine-sweep"></div>
-      <div class="contact-item">cheepullavindhya@2k7gmail.com</div>
-      <div class="contact-links">
-        <a href="https://github.com/vindhya0208" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-        <a href="https://www.linkedin.com/in/vindhya-cheepulla/" target="_blank"><i class="fab fa-linkedin"></i>
-          LinkedIn</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <p>© 2026 Vindhya Cheepulla • In Search of Pure Logic</p>
-  </footer>
-
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 1200, once: true, offset: 150 });
+    /** * THREE.JS BACKGROUND 
+     */
+    let scene, camera, renderer, starGeo, stars, core;
 
-    // GSAP REGISTRATIONS
-    gsap.registerPlugin(ScrollTrigger, TextPlugin);
+    function initThree() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+      camera.position.z = 10;
 
-    // 1. PRELOADER & ENTRANCE TIMELINE
-    const tl = gsap.timeline({ defaults: { ease: "power4.inOut" } });
+      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
 
-    // Split text for Hero Title manually since SplitText is a Club GreenSock plugin
-    const heroTitle = document.querySelector('header h1');
-    const titleText = heroTitle.innerText;
-    heroTitle.innerHTML = titleText.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
-
-    tl.to("#pulseText", { opacity: 1, duration: 1 })
-      .to("#pulseText", { opacity: 0.3, repeat: 2, yoyo: true, duration: 0.8 })
-      .to(".curtain-left", { xPercent: -100, duration: 1.5, ease: "expo.inOut" }, "+=0.2")
-      .to(".curtain-right", { xPercent: 100, duration: 1.5, ease: "expo.inOut" }, "<")
-      .to(".preloader", { display: "none" })
-      .from(".navbar", { yPercent: -100, duration: 1, ease: "expo.out" }, "-=0.5")
-      .from(".header-sub", { y: 30, opacity: 0, duration: 1 }, "-=0.7")
-      .from(".char", {
-        y: 100,
-        opacity: 0,
-        stagger: 0.05,
-        duration: 1,
-        ease: "back.out(1.7)"
-      }, "-=0.8")
-      .from("header p", { y: 20, opacity: 0, duration: 1 }, "-=0.5");
-
-    // 2. THREE.JS SILK WAVE
-    const canvas = document.querySelector('#bg-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
-
-    const geometry = new THREE.PlaneGeometry(20, 10, 50, 50);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x64a6bd,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.05
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.rotation.x = -Math.PI / 3;
-    scene.add(mesh);
-
-    function animateThree() {
-      requestAnimationFrame(animateThree);
-      const time = Date.now() * 0.001;
-      const positions = geometry.attributes.position.array;
-      for (let i = 0; i < positions.length; i += 3) {
-        const x = positions[i];
-        const y = positions[i + 1];
-        positions[i + 2] = Math.sin(x * 0.5 + time) * Math.cos(y * 0.5 + time) * 0.5;
+      // 1. STAR FIELD
+      starGeo = new THREE.BufferGeometry();
+      const starCoords = [];
+      for (let i = 0; i < 6000; i++) {
+        starCoords.push(Math.random() * 600 - 300, Math.random() * 600 - 300, Math.random() * 600 - 300);
       }
-      geometry.attributes.position.needsUpdate = true;
+      starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starCoords, 3));
+
+      let starMaterial = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.7 });
+      stars = new THREE.Points(starGeo, starMaterial);
+      scene.add(stars);
+
+      // 2. THE CORE (Torus Knot representing "Logic")
+      const coreGeo = new THREE.TorusKnotGeometry(2.5, 0.4, 150, 20);
+      const coreMat = new THREE.MeshBasicMaterial({
+        color: 0xd4af37,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.15
+      });
+      core = new THREE.Mesh(coreGeo, coreMat);
+      scene.add(core);
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      animate();
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      stars.rotation.y += 0.0005;
+      core.rotation.x += 0.002;
+      core.rotation.y += 0.001;
       renderer.render(scene, camera);
     }
 
-    function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-    window.addEventListener('resize', onWindowResize);
-    onWindowResize();
-    animateThree();
+    /** * GSAP SCROLL STORYTELLING
+     */
+    function initGSAP(lenisInstance) {
+      gsap.registerPlugin(ScrollTrigger);
 
-    // 3. TSPARTICLES
-    tsParticles.load("tsparticles", {
-      particles: {
-        number: { value: 20, density: { enable: true, value_area: 1000 } },
-        color: { value: "#90e0ef" },
-        shape: { type: "circle" },
-        opacity: { value: 0.1, random: true },
-        size: { value: { min: 1, max: 3 }, random: true },
-        move: {
-          enable: true,
-          speed: 0.5,
-          direction: "top",
-          random: true,
-          straight: false,
-          out_mode: "out"
-        }
-      }
-    });
+      // Synchronize ScrollTrigger with Lenis
+      lenisInstance.on('scroll', ScrollTrigger.update);
 
-    // 4. SCROLL INTERACTIONS
-    gsap.to(".scroll-progress", {
-      width: "100%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.3
-      }
-    });
-
-    // Parallax background
-    gsap.to("#bg-canvas", {
-      y: -200,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true
-      }
-    });
-
-    // Scroll-triggered reveal
-    document.querySelectorAll('section').forEach(section => {
-      gsap.from(section.querySelectorAll('.card, h2'), {
-        y: 50,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.2,
-        ease: "power3.out",
+      // Scroll-reactive 3D Movement
+      gsap.to(camera.position, {
+        z: 2,
         scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none"
+          trigger: "main",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 2
         }
       });
-    });
 
-    // 5. MICRO-INTERACTIONS
-    VanillaTilt.init(document.querySelectorAll(".card"), {
-      max: 10,
-      speed: 400,
-      glare: true,
-      "max-glare": 0.2,
-    });
-
-    // Floating Hero effect
-    gsap.to("header > div", {
-      y: 15,
-      duration: 3,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-
-    // Button interactions
-    document.querySelectorAll('.github-link, .live-link').forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        gsap.to(btn, { y: -3, duration: 0.3, ease: "power2.out" });
+      gsap.to(core.rotation, {
+        z: Math.PI * 2,
+        scrollTrigger: {
+          trigger: "main",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1
+        }
       });
-      btn.addEventListener('mouseleave', () => {
-        gsap.to(btn, { y: 0, duration: 0.3, ease: "power2.out" });
-      });
-    });
 
-    // Button interactions
-    document.querySelectorAll('.github-link, .live-link').forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        gsap.to(btn, { y: -3, duration: 0.3, ease: "power2.out" });
-      });
-      btn.addEventListener('mouseleave', () => {
-        gsap.to(btn, { y: 0, duration: 0.3, ease: "power2.out" });
-      });
-    });
+      // Loader Exit and Hero Intro
+      const heroTl = gsap.timeline();
+      heroTl.to("#loader-text", { opacity: 1, duration: 1 })
+        .to("#loader-bar", { x: 0, duration: 1.5, ease: "power2.inOut" })
+        .to("#loader", { y: "-100%", duration: 1, ease: "expo.inOut" })
+        .add(() => ScrollTrigger.refresh()) // Refresh positions after curtain opens
+        .to("#hero-title", { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }, "-=0.5")
+        .to("#hero-tagline", { y: 0, opacity: 1, duration: 1 }, "-=0.8")
+        .to("#hero-scroll", { opacity: 1, duration: 0.5 });
 
-    // MOBILE NAVIGATION (Existing code kept and enhanced if needed)
-    const hamburger = document.getElementById("hamburger");
-    const navLinks = document.getElementById("navLinks");
+      // Reveal General Elements
+      gsap.utils.toArray('.reveal-element').forEach(el => {
+        gsap.to(el, {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+            toggleActions: "play none none reverse"
+          }
+        });
+      });
 
-    hamburger.addEventListener("click", () => {
-      navLinks.classList.toggle("show");
-      const divs = hamburger.querySelectorAll('div');
-      if (navLinks.classList.contains('show')) {
-        gsap.to(divs[0], { rotate: 45, y: 8, duration: 0.3 });
-        gsap.to(divs[1], { opacity: 0, duration: 0.3 });
-        gsap.to(divs[2], { rotate: -45, y: -8, duration: 0.3 });
-      } else {
-        gsap.to(divs[0], { rotate: 0, y: 0, duration: 0.3 });
-        gsap.to(divs[1], { opacity: 1, duration: 0.3 });
-        gsap.to(divs[2], { rotate: 0, y: 0, duration: 0.3 });
+      // Staggered Projects Reveal (The Fix)
+      gsap.to(".reveal-project", {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: "#projects-grid",
+          start: "top 85%", // Trigger slightly earlier
+          toggleActions: "play none none reverse"
+        }
+      });
+
+      // Navbar hide/show
+      let lastScroll = 0;
+      window.addEventListener("scroll", () => {
+        const currentScroll = window.pageYOffset;
+        const navbar = document.getElementById("navbar");
+        if (currentScroll > lastScroll && currentScroll > 100) {
+          navbar.style.transform = "translateY(-100%)";
+        } else {
+          navbar.style.transform = "translateY(0)";
+          navbar.style.background = currentScroll > 50 ? "rgba(10,0,0,0.8)" : "transparent";
+          navbar.style.backdropFilter = currentScroll > 50 ? "blur(10px)" : "none";
+        }
+        lastScroll = currentScroll;
+      });
+    }
+
+    /**
+     * INITIALIZATION
+     */
+    window.onload = function () {
+      // 1. Start 3D
+      initThree();
+
+      // 2. Start Smooth Scroll (Lenis)
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
       }
-    });
+      requestAnimationFrame(raf);
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('show');
-        const divs = hamburger.querySelectorAll('div');
-        gsap.to(divs[0], { rotate: 0, y: 0, duration: 0.3 });
-        gsap.to(divs[1], { opacity: 1, duration: 0.3 });
-        gsap.to(divs[2], { rotate: 0, y: 0, duration: 0.3 });
+      // 3. Start GSAP with Lenis integration
+      initGSAP(lenis);
+
+      // Resize handler
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        ScrollTrigger.refresh();
       });
-    });
+    };
   </script>
 </body>
 
